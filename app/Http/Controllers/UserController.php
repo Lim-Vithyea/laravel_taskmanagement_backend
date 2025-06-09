@@ -15,7 +15,7 @@ class UserController extends Controller
             'name' => ['required', 'min:3', 'max:10'],
             'email' => ['required', 'email', Rule::unique('users', 'email')],
             'password' => ['required', 'min:8', 'max:200'],
-            'job' => ['required', 'max:30'],
+            // 'job' => ['required', 'max:30'],
             'role' => ['required']
         ]);
         $incomingRequest['password'] = bcrypt($incomingRequest['password']);
@@ -29,7 +29,26 @@ class UserController extends Controller
 
     }
     public function getUser(){
-        $allUser = User::all();
-        return response()->json($allUser);
+        $normalUser = User::where('role',2)->get();
+        return response()->json($normalUser);
     }
+    public function getAdmin(){
+        $adminUser = User::where('role',1)->get();
+        return response()->json($adminUser);
+    }
+    public function destroy($id)
+{
+    $user = User::find($id);
+
+    if (!$user) {
+        return response()->json([
+            'error' => 'User not found'
+        ], 404);
+    }
+    $user->forceDelete(); 
+
+    return response()->json([
+        'message' => 'User deleted successfully'
+    ]);
+}
 }

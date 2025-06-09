@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TaskPriorities;
 use App\Http\Controllers\TaskPrioritiesController;
 use App\Http\Controllers\TaskStatusController;
@@ -26,8 +27,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //User API endpoint
 Route::post('/adduser', [UserController::class, 'register']);
 Route::get('/getuser',[UserController::class,'getUser']);
+Route::get('/adminuser',[UserController::class,'getAdmin']);
+Route::delete('/delete/{delete}',[UserController::class,'destroy']);
 
 
+//Authentication route
+Route::post('/login',[AuthController::class,'login']);
+Route::post('/logout',[AuthController::class,'logout']);
 
 
 //Task status and priorities endpoint
