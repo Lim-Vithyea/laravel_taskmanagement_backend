@@ -15,6 +15,8 @@ class UsertaskController extends Controller
     public function index()
     {
         //
+        $tasks = UserTask::with(['employee', 'status', 'priority'])->get();
+        return response()->json($tasks);
     }
 
     /**

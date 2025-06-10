@@ -46,7 +46,7 @@ Route::post('/createtask', [UsertaskController::class, 'create']);
 Route::get('/tasks/{usertask}/edit',[UsertaskController::class,'edit']);
 Route::patch('/tasks/{usertask}',[UsertaskController::class,'update']);
 Route::delete('/delete/tasks/{usertask}',[UsertaskController::class,'destroy']);
-
+Route::get('/get_task',[UsertaskController::class,'index']);
 
 
 
