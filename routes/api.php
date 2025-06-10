@@ -1,53 +1,38 @@
-<?php
+<?php 
 
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Request;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\TaskPriorities;
 use App\Http\Controllers\TaskPrioritiesController;
 use App\Http\Controllers\TaskStatusController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UsertaskController;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
-
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
-//User API endpoint
 Route::post('/adduser', [UserController::class, 'register']);
-Route::get('/getuser',[UserController::class,'getUser']);
-Route::get('/adminuser',[UserController::class,'getAdmin']);
-Route::delete('/delete/{delete}',[UserController::class,'destroy']);
+Route::post('/login', [AuthController::class, 'login']);
 
-
-//Authentication route
-Route::post('/login',[AuthController::class,'login']);
-Route::post('/logout',[AuthController::class,'logout']);
-
-
-//Task status and priorities endpoint
+// Public endpoints (if needed)
 Route::get('/getstatus', [TaskStatusController::class, 'getTaskStatuses']);
 Route::get('/getprio', [TaskPrioritiesController::class, 'getPriority']);
 
 
-//Task API endpoint
-Route::post('/createtask', [UsertaskController::class, 'create']);
-Route::get('/tasks/{usertask}/edit',[UsertaskController::class,'edit']);
-Route::patch('/tasks/{usertask}',[UsertaskController::class,'update']);
-Route::delete('/delete/tasks/{usertask}',[UsertaskController::class,'destroy']);
-Route::get('/get_task',[UsertaskController::class,'index']);
+// Authenticated routes
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout']);
+    // User routes
+    Route::get('/getuser', [UserController::class, 'getUser']);
+    Route::get('/adminuser', [UserController::class, 'getAdmin']);
+    Route::delete('/delete/{delete}', [UserController::class, 'destroy']);
 
+    // Task routes
+    Route::post('/createtask', [UsertaskController::class, 'create']);
+    Route::get('/get_task', [UsertaskController::class, 'index']);
+    Route::get('/tasks/{usertask}/edit', [UsertaskController::class, 'edit']);
+    Route::patch('/tasks/{usertask}', [UsertaskController::class, 'update']);
+    Route::delete('/delete/tasks/{usertask}', [UsertaskController::class, 'destroy']);
 
-
-
+    // Authenticated user info
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
+});

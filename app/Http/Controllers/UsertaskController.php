@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Usertask;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UsertaskController extends Controller
 {
@@ -14,9 +15,19 @@ class UsertaskController extends Controller
      */
     public function index()
     {
-        //
-        $tasks = UserTask::with(['employee', 'status', 'priority'])->get();
-        return response()->json($tasks);
+       $user = Auth::user();
+
+        if ($user->role == 1) {
+        // Admin: see all tasks
+        $tasks = Usertask::with(['employee', 'status', 'priority'])->get();
+        } else {
+        // Regular user: see only their tasks
+        $tasks = Usertask::with(['employee', 'status', 'priority'])
+                         ->where('employee_id', $user->id)
+                         ->get();
+    }
+    return response()->json($tasks);
+
     }
 
     /**
