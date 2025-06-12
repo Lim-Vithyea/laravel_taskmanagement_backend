@@ -16,20 +16,15 @@ class UsertaskController extends Controller
     public function index()
     {
        $user = Auth::user();
-
         if ($user->role == 1) {
-        // Admin: see all tasks
-        $tasks = Usertask::with(['employee', 'status', 'priority'])->get();
+        $tasks = Usertask::with(['employee', 'status', 'priority','assignedBy'])->get();
         } else {
-        // Regular user: see only their tasks
-        $tasks = Usertask::with(['employee', 'status', 'priority'])
+        $tasks = Usertask::with(['employee', 'status', 'priority','assignedBy'])
                          ->where('employee_id', $user->id)
                          ->get();
     }
     return response()->json($tasks);
-
     }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -47,7 +42,8 @@ class UsertaskController extends Controller
         'status'          => ['required', 'exists:task_status,id'],
         'priority_task'   => ['required', 'exists:task_priorities,id'],
     ]);
-    $addTask = Usertask::create($createTask);
+        $createTask['assigned_by'] = auth()->id(); 
+        $addTask = Usertask::create($createTask);
     try{
         return response()->json(['message' => 'Task created successfully','task' => $addTask]);
     } catch (\Exception $ee) {
@@ -108,7 +104,6 @@ class UsertaskController extends Controller
         'status'          => ['required', 'exists:task_status,id'],
         'priority_task'   => ['required', 'exists:task_priorities,id'],
     ]);
-
     // Update task with validated data
     try{
         $usertask->update($editTask);
@@ -119,10 +114,7 @@ class UsertaskController extends Controller
     } catch (\Exception $e){
         return response()->json(['error' => $e->getMessage()], 500);
     }
-    
-
     }
-
     /**
      * Remove the specified resource from storage.
      *
@@ -134,7 +126,7 @@ class UsertaskController extends Controller
         //
          $usertask->delete();
 
-    return response()->json([
+    return response()->json(data: [
         'message' => 'Task deleted successfully'
     ]);
     }

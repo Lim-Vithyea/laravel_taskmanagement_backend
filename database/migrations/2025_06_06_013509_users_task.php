@@ -22,11 +22,13 @@ class UsersTask extends Migration
         $table->unsignedBigInteger('employee_id'); // foreign key size match
         $table->unsignedTinyInteger('status')->default(0); // 0 = pending, etc.
         $table->unsignedTinyInteger('priority_task')->default(0); // spelling fix + default
-        $table->timestamps(); // adds created_at and updated_at
+        $table->unsignedBigInteger('assigned_by');
+        $table->timestamps(); // adds created_at and updated_a
         // Optionally add foreign key constraint if employee_id comes from users or employees table
         $table->foreign('employee_id')->references('id')->on('users')->onDelete('cascade');
         $table->foreign('status')->references('id')->on('task_status')->onDelete('restrict');
         $table->foreign('priority_task')->references('id')->on('task_priorities')->onDelete('restrict');
+        $table->foreign('assigned_by')->references('id')->on('users')->onDelete('restrict');
     });
 }
 

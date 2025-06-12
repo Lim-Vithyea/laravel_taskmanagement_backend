@@ -29,7 +29,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/get_task', [UsertaskController::class, 'index']);
     Route::get('/tasks/{usertask}/edit', [UsertaskController::class, 'edit']);
     Route::patch('/tasks/{usertask}', [UsertaskController::class, 'update']);
-    Route::delete('/delete/tasks/{usertask}', [UsertaskController::class, 'destroy']);
+    Route::delete('/tasks/{usertask}', [UsertaskController::class, 'destroy']);
 
     // Authenticated user info
     Route::get('/user', function (Request $request) {

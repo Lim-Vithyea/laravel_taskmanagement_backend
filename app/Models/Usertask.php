@@ -18,6 +18,7 @@ class Usertask extends Model
         'employee_id',
         'status',
         'priority_task',
+        'assigned_by'
     ];
     public function employee()
     {
