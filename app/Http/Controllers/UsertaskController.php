@@ -18,7 +18,8 @@ class UsertaskController extends Controller
        $user = Auth::user();
         if ($user->role == 1) {
         $tasks = Usertask::with(['employee.image', 'status', 'priority','assignedBy',])->get();
-        } else {
+        } 
+        else {
         $tasks = Usertask::with(['employee.image', 'status', 'priority','assignedBy',])
                          ->where('employee_id', $user->id)
                          ->get();

@@ -21,8 +21,10 @@ Route::middleware('auth:sanctum')->group(function () {
     // User routes
     Route::get('/getuser', [UserController::class, 'getUser']);
     Route::get('/adminuser', [UserController::class, 'getAdmin']);
+    //not use yet
+    //Route::get('/userprofile', [UserController::class, 'getUserProfile']);
     Route::delete('/delete/{delete}', [UserController::class, 'destroy']);
-
+    
     // Task routes
     Route::post('/createtask', [UsertaskController::class, 'create']);
     Route::get('/get_task', [UsertaskController::class, 'index']);

@@ -23,7 +23,7 @@ class UsersTask extends Migration
         $table->unsignedTinyInteger('status')->default(0); // 0 = pending, etc.
         $table->unsignedTinyInteger('priority_task')->default(0); // spelling fix + default
         $table->unsignedBigInteger('assigned_by');
-        $table->timestamps(); // adds created_at and updated_a
+        $table->timestamps(); 
         // Optionally add foreign key constraint if employee_id comes from users or employees table
         $table->foreign('employee_id')->references('id')->on('users')->onDelete('cascade');
         $table->foreign('status')->references('id')->on('task_status')->onDelete('restrict');
