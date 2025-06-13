@@ -15,7 +15,6 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::get('/getstatus', [TaskStatusController::class, 'getTaskStatuses']);
 Route::get('/getprio', [TaskPrioritiesController::class, 'getPriority']);
 
-
 // Authenticated routes
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
@@ -30,7 +29,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/tasks/{usertask}/edit', [UsertaskController::class, 'edit']);
     Route::patch('/tasks/{usertask}', [UsertaskController::class, 'update']);
     Route::delete('/tasks/{usertask}', [UsertaskController::class, 'destroy']);
-
+    Route::post('/upload-profile', [UserController::class, 'uploadProfilePicture']);
+ 
+    
     // Authenticated user info
     Route::get('/user', function (Request $request) {
         return $request->user();

@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\RedirectController;
 use Illuminate\Validation\Rule;
+use App\Models\UserImage;
 
 class UserController extends Controller
 {
@@ -15,13 +16,12 @@ class UserController extends Controller
             'name' => ['required', 'min:3', 'max:10'],
             'email' => ['required', 'email', Rule::unique('users', 'email')],
             'password' => ['required', 'min:8', 'max:200'],
-            // 'job' => ['required', 'max:30'],
             'role' => ['required']
         ]);
         $incomingRequest['password'] = bcrypt($incomingRequest['password']);
         try {
         $user = User::create($incomingRequest);
-        auth()->login($user);
+        // auth()->login($user);
             return response()->json(['message' => 'User registered successfully'], 201);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
@@ -37,18 +37,41 @@ class UserController extends Controller
         return response()->json($adminUser);
     }
     public function destroy($id)
-{
-    $user = User::find($id);
+    {
+        $user = User::find($id);
 
-    if (!$user) {
+        if (!$user) {
+            return response()->json([
+                'error' => 'User not found'
+            ], 404);
+        }
+        $user->forceDelete(); 
+
         return response()->json([
-            'error' => 'User not found'
-        ], 404);
+            'message' => 'User deleted successfully'
+        ]);
     }
-    $user->forceDelete(); 
+    public function uploadProfilePicture(Request $request)
+    {
+        $request->validate([
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+        
+        $user = auth()->user();
+          if (!$user) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+        // Store the image
+        $path = $request->file('image')->store('profile_images', 'public');
 
-    return response()->json([
-        'message' => 'User deleted successfully'
-    ]);
-}
+        // Store image in separate table
+        $userImage = \App\Models\UserImage::updateOrCreate(
+            ['user_id' => $user->id],
+            ['image_path' => $path]
+        );
+
+        return response()->json(['message' => 'Image uploaded successfully', 'image' => $userImage]);
+    }
+
+
 }

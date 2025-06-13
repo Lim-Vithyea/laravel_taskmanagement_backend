@@ -18,7 +18,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
    // In App\Models\User.php
-    protected $fillable = ['name', 'email', 'password', 'job', 'role','profile_pic'];
+    protected $fillable = ['name', 'email', 'password', 'role',];
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -37,4 +37,9 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    public function image()
+    {
+        return $this->hasOne(UserImage::class, 'user_id', 'id');
+    }
+
 }

@@ -17,9 +17,9 @@ class UsertaskController extends Controller
     {
        $user = Auth::user();
         if ($user->role == 1) {
-        $tasks = Usertask::with(['employee', 'status', 'priority','assignedBy'])->get();
+        $tasks = Usertask::with(['employee.image', 'status', 'priority','assignedBy',])->get();
         } else {
-        $tasks = Usertask::with(['employee', 'status', 'priority','assignedBy'])
+        $tasks = Usertask::with(['employee.image', 'status', 'priority','assignedBy',])
                          ->where('employee_id', $user->id)
                          ->get();
     }
@@ -104,7 +104,6 @@ class UsertaskController extends Controller
         'status'          => ['required', 'exists:task_status,id'],
         'priority_task'   => ['required', 'exists:task_priorities,id'],
     ]);
-    // Update task with validated data
     try{
         $usertask->update($editTask);
         return response()->json([
