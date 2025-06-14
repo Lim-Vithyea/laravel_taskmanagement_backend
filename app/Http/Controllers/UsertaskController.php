@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Usertask;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use UsersTask;
 
 class UsertaskController extends Controller
 {
@@ -129,5 +130,22 @@ class UsertaskController extends Controller
     return response()->json(data: [
         'message' => 'Task deleted successfully'
     ]);
+    }
+    public function getUserTaskCount(){
+        $user = Auth::user();
+
+        $userTaskcount = Usertask::where('employee_id',$user->id)
+        ->count();
+        $count_inProgress = Usertask::where('status',2)
+        ->where('employee_id',$user->id)
+        ->count();
+        $count_completed = Usertask::where('status',3)
+        ->where('employee_id',$user->id)
+        ->count();
+        return response()->json([
+            'total_task' => $userTaskcount,
+            'task_inprogress' => $count_inProgress,
+            'task_completed' => $count_completed,
+        ]);
     }
 }

@@ -32,7 +32,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::patch('/tasks/{usertask}', [UsertaskController::class, 'update']);
     Route::delete('/tasks/{usertask}', [UsertaskController::class, 'destroy']);
     Route::post('/upload-profile', [UserController::class, 'uploadProfilePicture']);
- 
+    Route::get('/gettaskcount',[UsertaskController::class,'getUserTaskCount']);
     
     // Authenticated user info
     Route::get('/user', function (Request $request) {
