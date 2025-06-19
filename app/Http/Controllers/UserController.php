@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\RedirectController;
 use Illuminate\Validation\Rule;
 use App\Models\UserImage;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -29,10 +30,12 @@ class UserController extends Controller
 
     }
     public function getUser(){
+
         $normalUser = User::with('image')->where('role',2)->get();
         return response()->json($normalUser);
     }
     public function getAdmin(){
+
         $adminUser = User::with('image')->where('role',1)->get();
         return response()->json($adminUser);
     }
@@ -74,13 +77,44 @@ class UserController extends Controller
 
         return response()->json(['message' => 'Image uploaded successfully', 'image' => $userImage]);
     }
-    //currently don't need this function yet
 
+    //currently don't need this function yet
     // public function getUserProfile(){
     //     $user = auth()->user();
     //     $userwithimage = User::with('image')->where('id',$user->id)->first();
     //     return response()->json($userwithimage);
     // }
+
+    public function update(Request $request, $id)
+    {
+        // $authUser = auth()->user();
+
+        // if ($authUser->id != $id) {
+        //     return response()->json(['message' => 'You can only update your own account.'], 403);
+        // }
+
+        $request->validate([
+            'name' => 'sometimes|required|string|min:3|max:50',
+            'email' => "sometimes|required|email|unique:users,email,$id",
+            'password' => 'nullable|min:8|confirmed',
+            'role' => 'nullable|in:1,2'
+        ]);
+
+        $user = User::findOrFail($id);
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->role = $request->role;
+
+        if ($request->filled('password')) {
+        $user->password = Hash::make($request->password);
+        }
+            $user->save();
+
+            return response()->json([
+                'message' => 'User updated successfully',
+                'user' => $user
+            ]);
+        }
 
 
 }
