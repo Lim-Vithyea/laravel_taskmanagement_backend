@@ -13,10 +13,10 @@ class AddAssignedByToUserTaskTable extends Migration
      */
     public function up()
     {
-         Schema::table('user_task', function (Blueprint $table) {
-        $table->unsignedBigInteger('assigned_by')->after('priority_task');
-        $table->foreign('assigned_by')->references('id')->on('users')->onDelete('restrict');
-    });
+    //      Schema::table('user_task', function (Blueprint $table) {
+    //     $table->unsignedBigInteger('assigned_by')->after('priority_task');
+    //     $table->foreign('assigned_by')->references('id')->on('users')->onDelete('restrict');
+    // });
     }
 
     /**

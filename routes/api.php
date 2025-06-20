@@ -25,6 +25,7 @@ Route::middleware('auth:sanctum')->group(function () {
     
     //not use yet
     //Route::get('/userprofile', [UserController::class, 'getUserProfile']);
+    
     Route::delete('/delete/{delete}', [UserController::class, 'destroy']);
     
     // Task routes

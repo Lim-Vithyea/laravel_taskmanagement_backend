@@ -85,6 +85,34 @@ class UserController extends Controller
     //     return response()->json($userwithimage);
     // }
 
+    //this is for user edit their profile
+    
+    // public function userSelfUpdate(Request $request, $id){
+    //     $user = auth()->user();
+    //     $request->validate([
+    //         'name' => 'sometimes|required|string|min:3|max:50',
+    //         'email' => "sometimes|required|email|unique:users,email,$id",
+    //         'password' => 'nullable|min:8|confirmed',
+    //         'role' => 'nullable|in:1,2'
+    //     ]);
+
+    //     $user = User::findOrFail($id);
+    //     $user->name = $request->name;
+    //     $user->email = $request->email;
+    //     $user->role = $request->role;
+
+    //     if ($request->filled('password')) {
+    //     $user->password = Hash::make($request->password);
+    //     }
+    //         $user->save();
+
+    //         return response()->json([
+    //             'message' => 'User updated successfully',
+    //             'user' => $user
+    //         ]);
+    //     }
+    
+        //this is for admin
     public function update(Request $request, $id)
     {
         // $authUser = auth()->user();
