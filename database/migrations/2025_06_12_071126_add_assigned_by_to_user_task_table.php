@@ -26,9 +26,9 @@ class AddAssignedByToUserTaskTable extends Migration
      */
     public function down()
     {
-        Schema::table('user_task', function (Blueprint $table) {
-        $table->dropForeign(['assigned_by']);
-        $table->dropColumn('assigned_by');
-    });
+    //     Schema::table('user_task', function (Blueprint $table) {
+    //     $table->dropForeign(['assigned_by']);
+    //     $table->dropColumn('assigned_by');
+    // });
     }
 }
