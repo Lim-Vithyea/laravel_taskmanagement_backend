@@ -9,7 +9,9 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\UsertaskController;
 
 Route::post('/adduser', [UserController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
+// Route::post('/login', [AuthController::class, 'login']);
+Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:login');
+
 
 // Public endpoints (if needed)
 Route::get('/getstatus', [TaskStatusController::class, 'getTaskStatuses']);
